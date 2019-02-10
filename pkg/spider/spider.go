@@ -28,7 +28,7 @@ type Poet struct {
 	Liked       int    `gorm:"type:int;default(0)"`
 }
 
-func getPoetry(url string) error {
+func GetPoetry(url string) error {
 	resp, err := getHttpResponse(url, false)
 	if err != nil {
 		return err
