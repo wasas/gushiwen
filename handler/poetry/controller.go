@@ -2,6 +2,7 @@ package poetry
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -12,15 +13,6 @@ import (
 )
 
 func GetAllPoetry(c *gin.Context) {
-	params := c.Query("page")
-	page, _ := strconv.Atoi(params)
-	if page <= 0 || page >= 996 {
-		c.JSON(http.StatusOK, gin.H{
-			"code": http.StatusOK,
-			"msg":  fmt.Sprintf("page should in [1, 995], your type page = %d", page),
-		})
-		return
-	}
 	db, err := db.OpenDB()
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -30,12 +22,23 @@ func GetAllPoetry(c *gin.Context) {
 		return
 	}
 	defer db.Close()
+	params := c.Query("page")
+	page, _ := strconv.Atoi(params)
+	totalPoetry, _ := countPoetry()
+	totalPages := int(math.Ceil(totalPoetry / 10.0))
+	if page <= 0 || page > totalPages {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  fmt.Sprintf("page should in [1, %d], your type page = %d", totalPages, page),
+		})
+		return
+	}
 	startID := 10 * (page - 1)
 	poetrys := model.Poetrys{}
 	db.Where("id BETWEEN ? AND ?", startID, startID+10).Find(&poetrys)
 	poetryHeader := model.PoetryHeader{}
-	poetryHeader.TotalPoetrys = "9947"
-	poetryHeader.TotalPages = "995"
+	poetryHeader.TotalPoetrys = strconv.Itoa(int(totalPoetry))
+	poetryHeader.TotalPages = strconv.Itoa(totalPages)
 	poetryHeader.CurrentPage = params
 	poetryHeader.PageSize = "10"
 	poetryHeader.Poetrys = poetrys
@@ -70,8 +73,6 @@ func GetPoetryByAuthor(c *gin.Context) {
 }
 
 func GetSamplePoetry(c *gin.Context) {
-	id := rand.Intn(9947)
-	poetry := model.Poetry{}
 	db, err := db.OpenDB()
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -81,6 +82,9 @@ func GetSamplePoetry(c *gin.Context) {
 		return
 	}
 	defer db.Close()
+	total, _ := countPoetry()
+	id := rand.Intn(int(total))
+	poetry := model.Poetry{}
 	db.First(&poetry, id)
 	c.JSON(http.StatusOK, gin.H{
 		"poetry": poetry,
