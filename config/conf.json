@@ -1,5 +1,5 @@
 {
-    "table":"gushiwen",
+    "database":"database",
     "user":"user",
     "passwd":"passwd"
 }

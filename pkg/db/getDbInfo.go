@@ -12,15 +12,15 @@ import (
 )
 
 type dbInfo struct {
-	User   string `json:"user"`
-	Passwd string `json:"passwd"`
-	Table  string `json:"table"`
+	User     string `json:"user"`
+	Passwd   string `json:"passwd"`
+	Database string `json:"database"`
 }
 
 var (
-	user   string
-	passwd string
-	table  string
+	user     string
+	passwd   string
+	database string
 )
 
 func CreatDB() error {
@@ -45,13 +45,13 @@ func getDB() (string, string, string, error) {
 	if err != nil {
 		return "", "", "", err
 	}
-	return info.User, info.Passwd, info.Table, nil
+	return info.User, info.Passwd, info.Database, nil
 }
 
 func OpenDB() (*gorm.DB, error) {
-	user, passwd, table, err := getDB()
+	user, passwd, database, err := getDB()
 	if err != nil {
 		panic(err)
 	}
-	return gorm.Open("mysql", fmt.Sprintf(`%s:%s@/%s?parseTime=True`, user, passwd, table))
+	return gorm.Open("mysql", fmt.Sprintf(`%s:%s@/%s?parseTime=True`, user, passwd, database))
 }
