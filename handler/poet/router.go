@@ -3,7 +3,7 @@ package poet
 import "github.com/gin-gonic/gin"
 
 func Register(r *gin.RouterGroup) {
-	r.GET("/poet/all", GetAllPoet)
-	r.GET("/poet/name", GetPoetByName)
-	r.GET("/poet/id", GetPoetByID)
+	r.GET("/poets/all", GetAllPoet)
+	r.GET("/poets/name", GetPoetByName)
+	r.GET("/poets/id", GetPoetByID)
 }
