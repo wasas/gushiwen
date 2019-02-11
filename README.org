@@ -4,11 +4,11 @@
    - 查看实现了哪些路由: [[http://107.182.176.47:18080/][here]]
 *** 诗词
     - 查看所有诗词,每页显示10条数据,总共1000页: [[http://107.182.176.47:18080/api/poetry/all?page=1][here]]
-    - 根据作者查看诗词: [[http://107.182.176.47:18080/api/poetry/author?author=%25E6%259D%258E%25E7%2599%25BD][here]]
+    - 根据作者查看诗词: [[http://107.182.176.47:18080/api/poetry/author?author=李白][here]]
     - 随机一首诗词: [[http://107.182.176.47:18080/api/poetry/sample][here]]
 *** 诗人
     - 查看所有诗人,每页显示10条数据,总共1000页: [[http://107.182.176.47:18080/api/poet/all?page=1][here]]
-    - 根据名字查找: [[http://107.182.176.47:18080/api/poet/name?name=%25E6%259D%258E%25E7%2599%25BD][here]]
+    - 根据名字查找: [[http://107.182.176.47:18080/api/poet/name?name=李清照][here]]
     - 根据id查找: [[http://107.182.176.47:18080/api/poet/id?id=7][here]]
 ** 其它
    抓取数据可能失败,爬虫太简单会被服务器ban.数据库(mysql)配置文件在[[./config/conf.json][这里]]
