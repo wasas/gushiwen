@@ -8,6 +8,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"github.com/trytwice/gushiwen/model"
 )
 
 type dbInfo struct {
@@ -21,6 +22,17 @@ var (
 	passwd string
 	table  string
 )
+
+func CreatDB() error {
+	db, err := OpenDB()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	db.AutoMigrate(&model.Poet{})
+	db.AutoMigrate(&model.Poetry{})
+	return nil
+}
 
 func getDB() (string, string, string, error) {
 	gopath := os.Getenv("GOPATH")

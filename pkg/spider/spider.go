@@ -5,28 +5,9 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/jinzhu/gorm"
+	"github.com/trytwice/gushiwen/model"
 	"github.com/trytwice/gushiwen/pkg/db"
 )
-
-type Poetry struct {
-	gorm.Model
-	Title   string `gorm:"type:varchar(100)"`
-	Content string `gorm:"type:varchar(3000)"`
-	Author  string `gorm:"type:varchar(50)"`
-	Dynasty string `gorm:"type:varchar(50)"`
-	PoetURL string `gorm:"type:varchar(100)"`
-	Liked   int    `gorm:"type:int;default(0)"`
-}
-
-type Poet struct {
-	gorm.Model
-	Name        string `gorm:"type:varchar(100)"`
-	Description string `gorm:"type:varchar(3000)"`
-	ImageURL    string `gorm:"type:varchar(100)"`
-	TotalPoetry int    `gorm:"type:int;default(0)"`
-	Liked       int    `gorm:"type:int;default(0)"`
-}
 
 func GetPoetry(url string) error {
 	resp, err := getHttpResponse(url, false)
@@ -50,7 +31,7 @@ func GetPoetry(url string) error {
 		poetryURL, _ := s.Find("p a").Eq(0).Attr("href")
 		liked, _ := strconv.Atoi(strings.TrimSpace(s.Find(".good a span").Text()))
 
-		poetry := Poetry{
+		poetry := model.Poetry{
 			Title:   title,
 			Content: content,
 			Author:  author,
@@ -81,7 +62,7 @@ func GetPoet(url string) error {
 		liked, _ := strconv.Atoi(strings.TrimSpace(s.Find(".good a span").Text()))
 		totalPoetry, _ := strconv.Atoi(strings.TrimPrefix(strings.TrimSuffix(s.Find("p a").Eq(2).Text(), "篇诗文"), "► "))
 
-		poet := Poet{
+		poet := model.Poet{
 			Name:        name,
 			Description: description,
 			ImageURL:    imageURL,
