@@ -13,4 +13,4 @@
 ** 其它
    抓取数据可能失败,爬虫太简单会被服务器ban.数据库(mysql)配置文件在[[./config/conf.json][这里]]
 
-   install之后通过=gushiwen --help=查看具体用法
+   install之后通过 =gushiwen --help= 查看具体用法
